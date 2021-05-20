@@ -3,16 +3,25 @@
     <VueButton text="Button1"></VueButton>
     <VueButton text="Button2" icon-class="fa-star"></VueButton>
     <VueButton text="Button3" icon-class="fa-plus"></VueButton>
+    <vue-check-box :checked="checkedList[0]" text="약관에 동의합니다"></vue-check-box>
+    <vue-check-box :checked="checkedList[1]" text="개인정보 이용 동의" direction="right"></vue-check-box>
   </div>
 </template>
 
 <script>
 import VueButton from './components/VueButton.vue'
+import VueCheckBox from './components/VueCheckBox.vue'
 
 export default {
   name: 'App',
   components: {
-    VueButton
+    VueButton,
+    VueCheckBox
+  },
+  data() {
+    return {
+      checkedList: [true, false]
+    }
   }
 }
 </script>
