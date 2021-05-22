@@ -1,6 +1,6 @@
 <template>
   <div>
-    <VueButton text="Button1"></VueButton>
+    <VueButton text="Button1" v-on:click="onClick"></VueButton>
     <VueButton text="Button2" icon-class="fa-star"></VueButton>
     <VueButton text="Button3" icon-class="fa-plus"></VueButton>
     <vue-check-box :checked="checkedList[0]"
@@ -27,6 +27,10 @@ export default {
     }
   },
   methods: {
+    onClick: function() {
+      console.log(this.$store.state.checkboxState)
+      this.$store.state.checkboxState.chekced = !this.$store.state.checkboxState.chekced
+    },
     log: function (evt) {
       const { oldValue, newValue } = evt
       console.log(`oldValue ===> ${oldValue}, newValue ===> ${newValue}`)
