@@ -3,14 +3,18 @@
     <VueButton text="Button1" v-on:click="onClick"></VueButton>
     <VueButton text="Button2" icon-class="fa-star"></VueButton>
     <VueButton text="Button3" icon-class="fa-plus"></VueButton>
-    <vue-check-box :checked="checkedList[0]"
-     text="약관에 동의합니다"
+    <vue-check-box :checked="checkboxList[0].checked"
+     :text="checkboxList[0].text"
+     uid="ckb_agree_terms"
+     uindex="0"
      v-on:onCheckedValueChanged="valueChange"
      v-on:onAfterMounted="addStore"
      ></vue-check-box>
-    <vue-check-box :checked="checkedList[1]" 
-    text="개인정보 이용 동의" 
+    <vue-check-box :checked="checkboxList[1].checked"
+     :text="checkboxList[1].text"
     direction="right"
+    uid="ckb_agree_privacy"
+     uindex="1"
      v-on:onAfterMounted="addStore"
     ></vue-check-box>
   </div>
@@ -30,8 +34,11 @@ export default {
   },
   data() {
     return {
-      checkedList: [true, false]
     }
+  },
+  mounted() {
+    this.checkboxState[0].commit('setChecked', true)
+    this.checkboxState[0].commit('setText', '진짜로 동의합니다')
   },
   computed: {
     ...mapGetters([
@@ -41,10 +48,7 @@ export default {
   getters: {
     checkboxState: () => {
       return this.$store.getters.checkboxState
-    }
-  },
-  mounted() {
-    console.log(this.checkboxState)
+    },
   },
   methods: {
     valueChange(evt) {

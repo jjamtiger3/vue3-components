@@ -7,4 +7,12 @@ export default createStore({
             text: ''
         }
     },
+    mutations: {
+        setChecked (state, checked) {
+            state.checked = checked;
+        },
+        setText (state, text) {
+            state.text = text
+        }
+    }
 })

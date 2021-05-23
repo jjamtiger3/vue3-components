@@ -16,12 +16,15 @@ export default {
   props: {
     checked: Boolean,
     text: String,
-    direction: String
+    direction: String,
+    uid: String,
+    uindex: Number
   },
   mounted() {
       this.dataChecked = this.checked;
       this.$emit('onAfterMounted', {
-        target: this
+        target: this.uid,
+        index: this.uindex
       })
   },
   methods: {
