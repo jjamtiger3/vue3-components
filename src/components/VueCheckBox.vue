@@ -19,14 +19,20 @@ export default {
     direction: String
   },
   mounted() {
-      console.log(this.checked)
       this.dataChecked = this.checked;
+      this.$emit('onAfterMounted', {
+        target: this
+      })
   },
   methods: {
+    setChecked(checked) {
+      this.dataChecked = checked
+    },
     onLabelClicked () {
       const oldValue = this.dataChecked
-      this.dataChecked = !this.dataChecked
+      this.setChecked(!this.dataChecked)
       const newValue = this.dataChecked
+
       this.$emit('onCheckedValueChanged', {
         oldValue, 
         newValue

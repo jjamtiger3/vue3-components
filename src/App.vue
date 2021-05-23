@@ -5,15 +5,22 @@
     <VueButton text="Button3" icon-class="fa-plus"></VueButton>
     <vue-check-box :checked="checkedList[0]"
      text="약관에 동의합니다"
-     v-on:onCheckedValueChanged="log"
+     v-on:onCheckedValueChanged="valueChange"
+     v-on:onAfterMounted="addStore"
      ></vue-check-box>
-    <vue-check-box :checked="checkedList[1]" text="개인정보 이용 동의" direction="right"></vue-check-box>
+    <vue-check-box :checked="checkedList[1]" 
+    text="개인정보 이용 동의" 
+    direction="right"
+     v-on:onAfterMounted="addStore"
+    ></vue-check-box>
   </div>
 </template>
 
 <script>
 import VueButton from './components/VueButton.vue'
 import VueCheckBox from './components/VueCheckBox.vue'
+import { mapGetters } from 'vuex'
+import checkboxStore from './store/components/checkbox'
 
 export default {
   name: 'App',
@@ -26,14 +33,25 @@ export default {
       checkedList: [true, false]
     }
   },
+  computed: {
+    ...mapGetters([
+      'checkboxState'
+    ])
+  },
+  getters: {
+    checkboxState: () => {
+      return this.$store.getters.checkboxState
+    }
+  },
+  mounted() {
+    console.log(this.checkboxState)
+  },
   methods: {
-    onClick: function() {
-      console.log(this.$store.state.checkboxState)
-      this.$store.state.checkboxState.chekced = !this.$store.state.checkboxState.chekced
+    valueChange(evt) {
+      console.log(`${evt.oldValue} ==> oldValue, ${evt.newValue} ==> newValue`)
     },
-    log: function (evt) {
-      const { oldValue, newValue } = evt
-      console.log(`oldValue ===> ${oldValue}, newValue ===> ${newValue}`)
+    addStore() {
+      this.$store.commit('addStore', checkboxStore)
     }
   }
 }
