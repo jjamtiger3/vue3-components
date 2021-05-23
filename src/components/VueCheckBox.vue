@@ -1,7 +1,7 @@
 <template>
-  <div :class="direction === 'right' ? 'right' : ''">
+  <div :class="direction === 'right' ? 'right' : ''" v-on:click="onClick">
       <input type="checkbox" :checked="dataChecked">
-      <label v-on:click="onLabelClicked">{{text}}</label>
+      <label>{{dataText}}</label>
   </div>
 </template>
 
@@ -10,33 +10,45 @@ export default {
   name: 'VueCheckBox',
   data() {
     return {
-      dataChecked: false
+      dataChecked: false,
+      dataText: ''
     }
   },
   props: {
     checked: Boolean,
     text: String,
     direction: String,
-    uid: String,
-    uindex: Number
+    uid: String
+  },
+  watch: {
+    checked: function(newValue) {
+      this.dataChecked = newValue
+    },
+    text: function(newValue) {
+      this.dataText = newValue
+    }
   },
   mounted() {
       this.dataChecked = this.checked;
+      this.dataText = this.text
+      console.log(this.dataChecked, this.dataText)
       this.$emit('onAfterMounted', {
-        target: this.uid,
-        index: this.uindex
+        target: this.uid
       })
   },
   methods: {
-    setChecked(checked) {
+    setChecked (checked) {
       this.dataChecked = checked
+      return this.dataChecked
     },
-    onLabelClicked () {
+    onClick () {
+      const target = this.uid
       const oldValue = this.dataChecked
-      this.setChecked(!this.dataChecked)
-      const newValue = this.dataChecked
+      const newValue = !this.dataChecked
+      this.setChecked(newValue)
 
       this.$emit('onCheckedValueChanged', {
+        target,
         oldValue, 
         newValue
       })

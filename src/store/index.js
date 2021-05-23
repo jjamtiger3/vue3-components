@@ -3,12 +3,26 @@ import { createStore } from 'vuex'
 export const store = createStore({
     state() {
         return {
-            checkBoxState: []
+            checkBoxState: {
+                chk_agree: {
+                    checked: false,
+                    text: ''
+                },
+                chk_privacy: {
+                    checked: false,
+                    text: ''
+                }
+            }
         }
     },
     mutations: {
-        addStore(state, store) {
-            state.checkBoxState.push(store)
+        setChecked (state, payload) {
+            const { target, checked } = payload
+            state.checkBoxState[target].checked = checked;
+        },
+        setText (state, payload) {
+            const { target, text } = payload
+            state.checkBoxState[target].text = text;
         }
     },
     getters: {
