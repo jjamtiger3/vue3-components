@@ -4,14 +4,14 @@
     <VueButton text="Button2" icon-class="fa-star"></VueButton>
     <VueButton text="Button3" icon-class="fa-plus"></VueButton>
     <vue-check-box 
-      :checked="this.checkboxState.chk_agree.checked"
-      :text="this.checkboxState.chk_agree.text"
+      :checked="this.getCheckBoxState('chk_agree').checked"
+      :text="this.getCheckBoxState('chk_agree').text"
       uid="chk_agree"
       v-on:onCheckedValueChanged="valueChange"
      ></vue-check-box>
     <vue-check-box 
-      :checked="this.checkboxState.chk_privacy.checked"
-      :text="this.checkboxState.chk_privacy.text"
+      :checked="this.getCheckBoxState('chk_privacy').checked"
+      :text="this.getCheckBoxState('chk_privacy').text"
       uid="chk_privacy"
       direction="right"
       v-on:onCheckedValueChanged="valueChange"
@@ -67,6 +67,9 @@ export default {
         checked: newValue
       })
       console.log(this.checkboxState[evt.target].checked)
+    },
+    getCheckBoxState(target) {
+      return this.checkboxState[target] || {}
     }
   }
 }
