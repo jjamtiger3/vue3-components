@@ -1,5 +1,5 @@
 <template>
-  <div class="vue-grid-container" :style="_styles">
+  <div class="vue-grid-container" :style="gridStyles">
     <div v-for="column in gridColumns" :key="column.id">
       <span class="column-header">{{column.header.text}}</span>
     </div>
@@ -23,6 +23,7 @@ export default {
   },
   mounted() {
     console.log(this.styles, this.columns)
+    this.gridStyles = this.styles;
 
     for(let i = 0; i < this.columns.length; i += 1) {
       const _column = this.columns[i]

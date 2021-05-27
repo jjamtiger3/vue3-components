@@ -38,7 +38,8 @@ export default {
       gridData: {
         styles: {
           width: '250px',
-          height: '200px'
+          height: '200px',
+          border: '1px solid #000000'
         },
         columns: [
           {
