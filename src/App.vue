@@ -16,22 +16,51 @@
       direction="right"
       v-on:onCheckedValueChanged="valueChange"
     ></vue-check-box>
+    <vue-grid :styles="gridData.styles" :columns="gridData.columns"></vue-grid>
   </div>
 </template>
 
 <script>
 import VueButton from './components/VueButton.vue'
 import VueCheckBox from './components/VueCheckBox.vue'
+import VueGrid from './components/VueGrid.vue'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'App',
   components: {
     VueButton,
-    VueCheckBox
+    VueCheckBox,
+    VueGrid
   },
   data() {
     return {
+      gridData: {
+        styles: {
+          width: '250px',
+          height: '200px'
+        },
+        columns: [
+          {
+            id: 'column1',
+            header: {
+              text: 'column1'
+            }
+          },
+          {
+            id: 'column2',
+            header: {
+              text: 'column2'
+            }
+          },
+          {
+            id: 'column3',
+            header: {
+              text: 'column3'
+            }
+          },
+        ]
+      }
     }
   },
   mounted() {
