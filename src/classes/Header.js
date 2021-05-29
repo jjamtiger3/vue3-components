@@ -1,13 +1,22 @@
 class Header {
-    headerOptions = {}
+    text = ''
+    style = {}
+
     constructor(headerOptions) {
-        this.headerOptions = headerOptions;
+        this.style = headerOptions.style;
+        this.text = headerOptions.text;
     }
-    get text() {
-        return this.headerOptions.text;
+    get text () {
+        return this.text;
     }
-    set text(text) {
-        this.headerOptions.text = text;
+    set text (text) {
+        this.text = text;
+    }
+    get style () {
+        return this.style;
+    }
+    set style (style) {
+        this.style = style;
     }
 }
 export default Header;

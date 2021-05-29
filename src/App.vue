@@ -37,6 +37,7 @@ export default {
     return {
       gridData: {
         styles: {
+          'margin-top': '20px',
           width: '250px',
           height: '200px',
           border: '1px solid #000000'
@@ -45,19 +46,43 @@ export default {
           {
             id: 'column1',
             header: {
-              text: 'column1'
+              text: '날짜',
+              style: {
+                'background-color': '#eeeeee',
+                'text-align': 'center',
+                'font-size': '14px'
+              }
+            },
+            style: {
+              width: '100px'
             }
           },
           {
             id: 'column2',
             header: {
-              text: 'column2'
+              text: '수량',
+              style: {
+                'background-color': '#eeeeee',
+                'text-align': 'center',
+                'font-size': '14px'
+              }
+            },
+            style: {
+              width: '50px'
             }
           },
           {
             id: 'column3',
             header: {
-              text: 'column3'
+              text: '기타',
+              style: {
+                'background-color': '#eeeeee',
+                'text-align': 'center',
+                'font-size': '14px'
+              }
+            },
+            style: {
+              width: '300px'
             }
           },
         ]
