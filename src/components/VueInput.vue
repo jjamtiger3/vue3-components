@@ -1,8 +1,10 @@
 <template>
+<div>
   <div class="root-input">
-      <input :value="maskedValue">
+      <input v-model="dataValue">
       <svg class="fas fa-times"></svg>
   </div>
+</div>
 </template>
 
 <script>
@@ -11,25 +13,52 @@ export default {
   data() {
     return {
       dataValue: '',
-      classList: [],
+      classList: []
     }
   },
   props: {
       value: String,
       mask: String
   },
-  computed: {
-      maskedValue () {
-          return this.dataValue
-      },
-      iconClass () {
-          return this.classList.join('')
-      }
-  },
   mounted() {
       this.dataValue = this.value;
+      const maskReg = this.regFromMask();
+      this.dataValue = this.dataValue.replace(new RegExp(maskReg.maskExp), maskReg.regExp);
   },
   methods: {
+      regFromMask () {
+          // 1. 전체 문자열에서 문자 / 숫자 / * 를 제외한 특수문자가 있는지 체크
+          // 2. 있으면 특수문자로 split하여 첫번째 요소로 정규식 작성후 배열에 담고 특수문자도 배열에 담음
+          // 3. 2를 토대로 정규식 문자열 작성
+          // 4. 마스킹 길이에 따라 maxlength 지정
+          // 5. 숫자 / 문자 혼용은 은 추후 구현
+          // 6. 카드번호나 주민번호처럼 중간에 *는 추후 구현
+          // 7. 0으로 시작하면 타입은 넘버, l로 시작하면 문자
+          let arrMask = [];
+          let _mask = this.mask;
+          let specChar = '';
+          const specExp = new RegExp(/[^\w*]/g);
+          const wordExp = new RegExp(/[\w*]/g);
+          if(specExp.test(_mask)) {
+              specChar = _mask.replace(wordExp, '')[0];
+              arrMask = _mask.split(specChar);
+          }
+          const arrReg = [];
+          const arrRep = [];
+          for(let i = 0; i < arrMask.length; i += 1) {
+              const regChar = arrMask[i];
+              const isNumber = !isNaN(regChar[0]) ? true : false;
+              let strReg;
+              if (isNumber) {
+                  strReg = `(\\d{${regChar.length}})`;
+              } else {
+                  strReg = `(\\w{${regChar.length}})`;
+              }
+              arrReg.push(strReg);
+              arrRep.push(`$${(i + 1)}`)
+          }
+          return { maskExp: arrReg.join(''), regExp: arrRep.join(specChar) };
+      }
   }
 }
 </script>

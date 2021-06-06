@@ -16,7 +16,8 @@
       direction="right"
       v-on:onCheckedValueChanged="valueChange"
     ></vue-check-box>
-    <vue-input value="01050113021"></vue-input>
+    <vue-input value="01050113021" mask="000-0000-0000"></vue-input>
+    <vue-input value="8309261111111" mask="000000-0000000"></vue-input>
   </div>
 </template>
 
