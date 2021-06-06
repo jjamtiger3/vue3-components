@@ -16,14 +16,14 @@
       direction="right"
       v-on:onCheckedValueChanged="valueChange"
     ></vue-check-box>
-    <vue-grid :styles="gridData.styles" :columns="gridData.columns"></vue-grid>
+    <vue-input value="01050113021"></vue-input>
   </div>
 </template>
 
 <script>
 import VueButton from './components/VueButton.vue'
 import VueCheckBox from './components/VueCheckBox.vue'
-import VueGrid from './components/VueGrid.vue'
+import VueInput from './components/VueInput.vue'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -31,7 +31,7 @@ export default {
   components: {
     VueButton,
     VueCheckBox,
-    VueGrid
+    VueInput
   },
   data() {
     return {
