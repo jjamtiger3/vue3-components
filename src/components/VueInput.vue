@@ -1,7 +1,7 @@
 <template>
-  <div class="root-input" v-on:click="onClick" v-on:mouseover="onMouseOver" v-on:mouseleave="onMouseLeave">
-      <input :value="dataValue">
-      <span class="clear-button fa fa-times" :class="iconClass"></span>
+  <div class="root-input">
+      <input :value="maskedValue">
+      <svg class="fas fa-times"></svg>
   </div>
 </template>
 
@@ -11,27 +11,25 @@ export default {
   data() {
     return {
       dataValue: '',
-      iconClass: ''
+      classList: [],
     }
   },
   props: {
-      value: String
+      value: String,
+      mask: String
   },
   computed: {
-
+      maskedValue () {
+          return this.dataValue
+      },
+      iconClass () {
+          return this.classList.join('')
+      }
   },
   mounted() {
       this.dataValue = this.value;
   },
   methods: {
-    onClick () {
-    },
-    onMouseOver() {
-        this.iconClass = 'mouseover'
-    },
-    onMouseLeave() {
-        this.iconClass = ''
-    }
   }
 }
 </script>
@@ -43,12 +41,15 @@ export default {
     div.root-input input {
         padding-right: 20px;
     }
-    div.root-input span.clear-button {
+    div.root-input svg {
         position: relative;
         display: none;
         right: 20px;
     }
-    div.root-input span.clear-button.mouseover {
+    div.root-input:hover svg {
+        display: inline-block;
+    }
+    div.root-input input:focus + svg {
         display: inline-block;
     }
 </style>
