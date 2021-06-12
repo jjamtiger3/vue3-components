@@ -1,7 +1,7 @@
 <template>
 <div>
   <div class="root-input">
-      <input v-model="dataValue">
+      <input v-model="dataValue" :maxlength="maxLength" v-on:input="inputValue($event)">
       <svg class="fas fa-times"></svg>
   </div>
 </div>
@@ -13,7 +13,8 @@ export default {
   data() {
     return {
       dataValue: '',
-      classList: []
+      classList: [],
+      maxLength: 0
     }
   },
   props: {
@@ -21,9 +22,10 @@ export default {
       mask: String
   },
   mounted() {
+      this.maxLength = this.value.length;
       this.dataValue = this.value;
-      const maskReg = this.regFromMask();
-      this.dataValue = this.dataValue.replace(new RegExp(maskReg.maskExp), maskReg.regExp);
+      this.maskedReg = this.regFromMask();
+      this.dataValue = this.dataValue.replace(new RegExp(this.maskedReg.maskExp), this.maskedReg.regExp);
   },
   methods: {
       regFromMask () {
@@ -58,6 +60,11 @@ export default {
               arrRep.push(`$${(i + 1)}`)
           }
           return { maskExp: arrReg.join(''), regExp: arrRep.join(specChar) };
+      },
+      inputValue ($event) {
+          // 길이가 다 차야 패턴이 완성된다. 길이가 다 차지않아도 패턴이 완성되도록 수정해야함
+        const value = $event.target.value;
+        this.dataValue = value.replace(new RegExp(this.maskedReg.maskExp), this.maskedReg.regExp);
       }
   }
 }
