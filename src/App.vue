@@ -16,8 +16,9 @@
       direction="right"
       v-on:onCheckedValueChanged="valueChange"
     ></vue-check-box>
-    <vue-input value="01050113021" mask="000-0000-0000"></vue-input>
-    <vue-input value="8309261111111" mask="000000-0000000"></vue-input>
+    <vue-input ref="input0" value="01050113021" mask="000-0000-0000"></vue-input>
+    <vue-input ref="input1" value="8309261111111" mask="000000-0000000"></vue-input>
+    <vue-input ref="input2" value="8309261111111" mask="000000-0******"></vue-input>
   </div>
 </template>
 
@@ -126,6 +127,14 @@ export default {
     },
     getCheckBoxState(target) {
       return this.checkboxState[target] || {}
+    },
+    onClick() {
+      console.log(`input0 maskedValue: ${this.$refs.input0.getMaskedValue()}`)
+      console.log(`input1 maskedValue: ${this.$refs.input1.getMaskedValue()}`);
+      console.log(`input2 maskedValue: ${this.$refs.input2.getMaskedValue()}`);
+      console.log(`input0 realValue: ${this.$refs.input0.getRealValue()}`);
+      console.log(`input1 realValue: ${this.$refs.input1.getRealValue()}`);
+      console.log(`input2 realValue: ${this.$refs.input2.getRealValue()}`);
     }
   }
 }
