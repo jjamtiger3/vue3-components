@@ -13,6 +13,7 @@ export default {
   data() {
     return {
       dataValue: '',
+      realValue: '',
       classList: [],
       maxLength: 0
     }
@@ -22,8 +23,9 @@ export default {
       mask: String
   },
   mounted() {
-      this.maxLength = this.value.length;
+      this.maxLength = this.mask.length;
       this.dataValue = this.value;
+      this.realValue = this.value;
       this.maskedReg = this.regFromMask();
       this.dataValue = this.dataValue.replace(new RegExp(this.maskedReg.maskExp), this.maskedReg.regExp);
   },
@@ -47,24 +49,39 @@ export default {
           }
           const arrReg = [];
           const arrRep = [];
+          let count = 0;
           for(let i = 0; i < arrMask.length; i += 1) {
               const regChar = arrMask[i];
               const isNumber = !isNaN(regChar[0]) ? true : false;
-              let strReg;
-              if (isNumber) {
-                  strReg = `(\\d{${regChar.length}})`;
+              let strReg = isNumber ? `(\\d{${regChar.length}})` : `(\\w{${regChar.length}})`;
+              count += regChar.length;
+              if (this.realValue.length >= count) {
+                arrReg.push(strReg);
+                arrRep.push(`$${(i + 1)}`)
               } else {
-                  strReg = `(\\w{${regChar.length}})`;
+                  arrRep.push('');
+                  break;
               }
-              arrReg.push(strReg);
-              arrRep.push(`$${(i + 1)}`)
           }
           return { maskExp: arrReg.join(''), regExp: arrRep.join(specChar) };
       },
       inputValue ($event) {
-          // 길이가 다 차야 패턴이 완성된다. 길이가 다 차지않아도 패턴이 완성되도록 수정해야함
-        const value = $event.target.value;
-        this.dataValue = value.replace(new RegExp(this.maskedReg.maskExp), this.maskedReg.regExp);
+        let value = $event.target.value;
+        const wordExp = new RegExp(/[\w*]/g);
+        const specChar = value.replace(wordExp, '')[0];
+        const specExp = new RegExp(/[^\w*]/g);
+        this.realValue = value.replace(specExp, '');
+        const maskedReg = this.regFromMask();
+        this.dataValue = this.realValue.replace(new RegExp(maskedReg.maskExp), maskedReg.regExp);
+        // 123-1234-에서 delete입력으로 - 제거시 비교 로직
+        if (!$event.data) {
+            const _value = this.dataValue;
+            if (_value[_value.length - 1] === specChar) {
+                const arrValue = _value.split('');
+                arrValue.splice(arrValue.length - 1, 1);
+                this.dataValue = arrValue.join('');
+            }
+        }
       }
   }
 }
