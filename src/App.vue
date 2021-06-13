@@ -19,6 +19,7 @@
     <vue-input ref="input0" value="01050113021" mask="000-0000-0000"></vue-input>
     <vue-input ref="input1" value="8309261111111" mask="000000-0000000"></vue-input>
     <vue-input ref="input2" value="8309261111111" mask="000000-0******"></vue-input>
+    <textarea class="print-zone" ref="textarea0"></textarea>
   </div>
 </template>
 
@@ -129,12 +130,14 @@ export default {
       return this.checkboxState[target] || {}
     },
     onClick() {
-      console.log(`input0 maskedValue: ${this.$refs.input0.getMaskedValue()}`)
-      console.log(`input1 maskedValue: ${this.$refs.input1.getMaskedValue()}`);
-      console.log(`input2 maskedValue: ${this.$refs.input2.getMaskedValue()}`);
-      console.log(`input0 realValue: ${this.$refs.input0.getRealValue()}`);
-      console.log(`input1 realValue: ${this.$refs.input1.getRealValue()}`);
-      console.log(`input2 realValue: ${this.$refs.input2.getRealValue()}`);
+      const arrValue = [];
+      arrValue.push(`input0 maskedValue: ${this.$refs.input0.getMaskedValue()}`);
+      arrValue.push(`input1 maskedValue: ${this.$refs.input1.getMaskedValue()}`);
+      arrValue.push(`input2 maskedValue: ${this.$refs.input2.getMaskedValue()}`);
+      arrValue.push(`input0 realValue: ${this.$refs.input0.getRealValue()}`);
+      arrValue.push(`input1 realValue: ${this.$refs.input1.getRealValue()}`);
+      arrValue.push(`input2 realValue: ${this.$refs.input2.getRealValue()}`);
+      this.$refs.textarea0.value = arrValue.join('\n');
     }
   }
 }
@@ -147,5 +150,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   margin-top: 60px;
+}
+textarea.print-zone {
+  width: 250px;
+  height: 300px;
+  margin-top: 30px;
 }
 </style>
