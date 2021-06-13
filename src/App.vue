@@ -19,6 +19,7 @@
     <vue-input ref="input0" value="01050113021" mask="000-0000-0000"></vue-input>
     <vue-input ref="input1" value="8309261111111" mask="000000-0000000"></vue-input>
     <vue-input ref="input2" value="8309261111111" mask="000000-0******"></vue-input>
+    <vue-input ref="input3" value="1111222233334444" mask="0000-0000-0000-0000"></vue-input>
     <textarea class="print-zone" ref="textarea0"></textarea>
   </div>
 </template>
@@ -152,7 +153,7 @@ export default {
   margin-top: 60px;
 }
 textarea.print-zone {
-  width: 250px;
+  width: 350px;
   height: 300px;
   margin-top: 30px;
 }

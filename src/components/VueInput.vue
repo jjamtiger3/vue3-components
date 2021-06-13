@@ -15,7 +15,8 @@ export default {
       maskedValue: '',
       realValue: '',
       classList: [],
-      maxLength: 0
+      maxLength: 0,
+      asterikMap: {}
     }
   },
   props: {
@@ -64,8 +65,17 @@ export default {
           }
           return { maskExp: arrReg.join(''), regExp: arrRep.join(specChar) };
       },
+      // masking (*)처리를 구현하기위해선 mask값의 * 포지션을 배열에 저장하여 입력값에서 변환하면 됨
       inputValue ($event) {
-        let value = $event.target.value;
+        const { target } = $event;
+        let value = target.value;
+        const arrMaskedValue = value.split('');
+        for(const i in this.asterikMap) {
+            if (i <= arrMaskedValue.length - 1 && this.asterikMap[i]) {
+                arrMaskedValue[i] = this.asterikMap[i];
+                value = arrMaskedValue.join('');
+            }
+        }
 
         const wordExp = new RegExp(/[\w*]/g);
         const specChar = value.replace(wordExp, '')[0];
@@ -76,14 +86,26 @@ export default {
 
         const maskedReg = this.regFromMask();
         this.maskedValue = this.realValue.replace(new RegExp(maskedReg.maskExp), maskedReg.regExp);
+        if (this.mask[target.selectionStart] === '*') {
+            this.asterikMap[target.selectionStart] = $event.data;
+        }
         // 123-1234-에서 delete입력으로 - 제거시 비교 로직
         if (!$event.data) { // delete를 통해 데이터가 제거됬을경우
             const _value = this.maskedValue;
+            const arrValue = _value.split('');
+            // 특수문자앞에서 Del키로 삭제할경우 처리 구현해야함
+
             // 맨뒷글자가 특수문자 인경우 제거
             if (_value[_value.length - 1] === specChar) {
-                const arrValue = _value.split('');
                 arrValue.splice(arrValue.length - 1, 1);
                 this.maskedValue = arrValue.join('');
+            }
+        }
+        const splitedMaskedValue = this.maskedValue.split('');
+        for(const i in this.asterikMap) {
+            if (splitedMaskedValue.length > i) {
+                splitedMaskedValue[i] = '*';
+                this.maskedValue = splitedMaskedValue.join('');
             }
         }
       },
