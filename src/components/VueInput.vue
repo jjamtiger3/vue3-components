@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import maskLib from '../common/maskLib.js';
+
 export default {
   name: 'VueInput',
   data() {
@@ -16,7 +18,7 @@ export default {
       realValue: '',
       classList: [],
       maxLength: 0,
-      asterikMap: {}
+      innerMaskedValue: ''
     }
   },
   props: {
@@ -28,7 +30,11 @@ export default {
       this.maskedValue = this.value;
       this.realValue = this.value;
       this.maskedReg = this.regFromMask();
-      this.maskedValue = this.maskedValue.replace(new RegExp(this.maskedReg.maskExp), this.maskedReg.regExp);
+      // this.maskedValue = this.maskedValue.replace(new RegExp(this.maskedReg.maskExp), this.maskedReg.regExp);
+      const _maskedValue = maskLib._applyMask(this.mask, this.maskedValue); // 내부에 저장할 마스킹적용값
+      this.innerMaskedValue = _maskedValue;
+      this.maskedValue = maskLib._applyAsterik(this.mask, _maskedValue); // 화면에 출력할 값
+      
   },
   methods: {
       /**
@@ -69,13 +75,6 @@ export default {
       inputValue ($event) {
         const { target } = $event;
         let value = target.value;
-        const arrMaskedValue = value.split('');
-        for(const i in this.asterikMap) {
-            if (i <= arrMaskedValue.length - 1 && this.asterikMap[i]) {
-                arrMaskedValue[i] = this.asterikMap[i];
-                value = arrMaskedValue.join('');
-            }
-        }
 
         const wordExp = new RegExp(/[\w*]/g);
         const specChar = value.replace(wordExp, '')[0];
@@ -86,9 +85,6 @@ export default {
 
         const maskedReg = this.regFromMask();
         this.maskedValue = this.realValue.replace(new RegExp(maskedReg.maskExp), maskedReg.regExp);
-        if (this.mask[target.selectionStart] === '*') {
-            this.asterikMap[target.selectionStart] = $event.data;
-        }
         // 123-1234-에서 delete입력으로 - 제거시 비교 로직
         if (!$event.data) { // delete를 통해 데이터가 제거됬을경우
             const _value = this.maskedValue;
@@ -101,20 +97,13 @@ export default {
                 this.maskedValue = arrValue.join('');
             }
         }
-        const splitedMaskedValue = this.maskedValue.split('');
-        for(const i in this.asterikMap) {
-            if (splitedMaskedValue.length > i) {
-                splitedMaskedValue[i] = '*';
-                this.maskedValue = splitedMaskedValue.join('');
-            }
-        }
       },
       getRealValue() {
           return this.realValue;
       },
       getMaskedValue() {
           return this.maskedValue;
-      }
+      },
   }
 }
 </script>
