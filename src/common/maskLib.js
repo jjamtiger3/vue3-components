@@ -51,26 +51,6 @@ const maskLib = {
     }
     return applyValue;
   },
-  _getMaskLength: (mask) => {
-    let pattLen = 0;
-    const arrMasks = mask.split(';');
-    if (arrMasks.length > 1) {
-      for (let i = 0; i < arrMasks.length; i += 1) {
-        const _mask = arrMasks[i];
-        if(_mask) {
-          const _pattLen = _mask.replace(/(\W)/g, '').trim().length; // 패턴에서 특수기호를 제거한 실제 패턴의 길이
-          pattLen = pattLen < _pattLen ? _mask.length : pattLen;
-        }
-      }
-    } else {
-      pattLen = mask.length;
-      // 패턴이 AAA-AAA같은 형식이 아니라 A(10)형식일 수 있음
-      if (mask.indexOf('(') > -1) {
-        pattLen = mask.replace(/[a-zA-Z()]/g, '');
-      }
-    }
-    return parseInt(pattLen, 10);
-  },
   _getExpFromMask: (_maskedValue, mask, splitter) => {
     const _maskPiece = mask.split(splitter);
     const _pattLen = _maskPiece.length;
