@@ -60,6 +60,7 @@ export default {
         position: relative;
         display: none;
         right: 20px;
+        cursor: pointer;
     }
     div.root-input:hover svg {
         display: inline-block;
