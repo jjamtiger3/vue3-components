@@ -1,6 +1,16 @@
 import util from './util';
 
 const maskLib = {
+  _applyReal: (value, diffValue) => {
+    const arrNewValue = value.split('');
+    const origValue = diffValue.split('');
+    arrNewValue.filter((value, index) => {
+      if (origValue[index] && value === '*') {
+        arrNewValue[index] = origValue[index];
+      }
+    });
+    return arrNewValue.join('').replace(/[^\d\w]/g, '');
+  },
   _applyMask: (mask, value) => {
     const masks = mask.split(';');
     const maskLen = masks.length; // 패턴의 개수
@@ -100,6 +110,9 @@ const maskLib = {
       regExp: new RegExp(eval(`/${strExp.join('')}/g`)),
       repExp: repExp.join(splitter),
     };
-  }
+  },
+  _isIncludeAsterik(mask) {
+    return mask.indexOf('*' > -1);
+  },
 }
 export default maskLib;

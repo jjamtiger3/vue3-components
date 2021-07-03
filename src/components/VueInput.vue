@@ -1,7 +1,8 @@
 <template>
 <div>
   <div class="root-input">
-      <input v-model="maskedValue" :maxlength="maxLength" v-on:input="inputValue($event)">
+      <input ref="display" :maxlength="maxLength" v-on:input="inputValue($event)">
+      <input ref="hidden" type="hidden" v-model="maskedValue">
       <svg class="fas fa-times"></svg>
   </div>
 </div>
@@ -17,8 +18,7 @@ export default {
       maskedValue: '',
       realValue: '',
       classList: [],
-      maxLength: 0,
-      innerMaskedValue: ''
+      maxLength: 0
     }
   },
   props: {
@@ -27,23 +27,26 @@ export default {
   },
   mounted() {
       this.maxLength = this.mask.length;
-      this.maskedValue = this.value;
       this.realValue = this.value;
       // this.maskedValue = this.maskedValue.replace(new RegExp(this.maskedReg.maskExp), this.maskedReg.regExp);
-      const _maskedValue = maskLib._applyMask(this.mask, this.maskedValue); // 내부에 저장할 마스킹적용값
-      this.innerMaskedValue = _maskedValue;
-      this.maskedValue = maskLib._applyAsterik(this.mask, _maskedValue); // 화면에 출력할 값
+      const _maskedValue = maskLib._applyMask(this.mask, this.realValue); // 내부에 저장할 마스킹적용값
+      this.maskedValue = _maskedValue;
+      this.$refs.display.value = maskLib._applyAsterik(this.mask, this.maskedValue);
       
   },
   methods: {
       inputValue ($event) {
-          console.log($event);
+        const realValue = maskLib._applyReal($event.target.value, this.maskedValue);
+        const _maskedValue = maskLib._applyMask(this.mask, realValue); // 내부에 저장할 마스킹적용값
+        this.maskedValue = _maskedValue;
+        this.realValue = realValue;
+        this.$refs.display.value = maskLib._applyAsterik(this.mask, this.maskedValue);
       },
       getRealValue() {
           return this.realValue;
       },
       getMaskedValue() {
-          return this.maskedValue;
+          return maskLib._applyAsterik(this.mask, this.maskedValue);
       },
   }
 }
